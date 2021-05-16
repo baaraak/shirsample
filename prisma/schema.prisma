@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique @db.VarChar(100)
+  username  String   @unique @db.VarChar(100)
+  password  String   @db.VarChar(100)
+  bio       String?  @db.VarChar(255)
+  avatar    String?  @db.VarChar(100)
+  samples   Sample[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Sample {
+  id          Int        @id @default(autoincrement())
+  user        User       @relation(fields: [userId], references: [id])
+  userId      Int
+  title       String?    @db.VarChar(100)
+  description String?    @db.VarChar(255)
+  genre       String?
+  language    String?    @db.Char(2)
+  closed      Boolean    @default(false)
+  proposals   Proposal[]
+  comments    Comment[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Proposal {
+  id          Int      @id @default(autoincrement())
+  sample      Sample   @relation(fields: [sampleId], references: [id])
+  sampleId    Int
+  artist_name String   @db.VarChar(100)
+  song_title  String   @db.VarChar(100)
+  accepted    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  body      String   @db.VarChar(255)
+  sample    Sample   @relation(fields: [sampleId], references: [id])
+  sampleId  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
