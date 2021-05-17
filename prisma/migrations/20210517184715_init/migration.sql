@@ -1,41 +1,11 @@
-/*
-  Warnings:
-
-  - You are about to drop the `Comment` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Proposal` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Sample` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `User` table. If the table is not empty, all the data it contains will be lost.
-
-*/
--- DropForeignKey
-ALTER TABLE "Comment" DROP CONSTRAINT "Comment_sampleId_fkey";
-
--- DropForeignKey
-ALTER TABLE "Proposal" DROP CONSTRAINT "Proposal_sampleId_fkey";
-
--- DropForeignKey
-ALTER TABLE "Sample" DROP CONSTRAINT "Sample_userId_fkey";
-
--- DropTable
-DROP TABLE "Comment";
-
--- DropTable
-DROP TABLE "Proposal";
-
--- DropTable
-DROP TABLE "Sample";
-
--- DropTable
-DROP TABLE "User";
-
 -- CreateTable
 CREATE TABLE "users" (
     "id" SERIAL NOT NULL,
     "email" TEXT,
     "email_verified" TIMESTAMP(3),
-    "username" VARCHAR(100) NOT NULL,
-    "password" VARCHAR(100) NOT NULL,
     "bio" VARCHAR(255),
+    "name" TEXT,
+    "image" TEXT,
     "avatar" VARCHAR(100),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -112,11 +82,20 @@ CREATE TABLE "sessions" (
     PRIMARY KEY ("id")
 );
 
--- CreateIndex
-CREATE UNIQUE INDEX "users.email_unique" ON "users"("email");
+-- CreateTable
+CREATE TABLE "verification_requests" (
+    "id" SERIAL NOT NULL,
+    "identifier" TEXT NOT NULL,
+    "token" TEXT NOT NULL,
+    "expires" TIMESTAMP(3) NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    PRIMARY KEY ("id")
+);
 
 -- CreateIndex
-CREATE UNIQUE INDEX "users.username_unique" ON "users"("username");
+CREATE UNIQUE INDEX "users.email_unique" ON "users"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "accounts.compound_id_unique" ON "accounts"("compound_id");
@@ -135,6 +114,9 @@ CREATE UNIQUE INDEX "sessions.session_token_unique" ON "sessions"("session_token
 
 -- CreateIndex
 CREATE UNIQUE INDEX "sessions.access_token_unique" ON "sessions"("access_token");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "verification_requests.token_unique" ON "verification_requests"("token");
 
 -- AddForeignKey
 ALTER TABLE "samples" ADD FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
