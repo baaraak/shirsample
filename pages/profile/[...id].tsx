@@ -3,6 +3,7 @@ import { getSession } from "next-auth/client";
 import React from "react";
 import useUser from "../../hooks/useUser";
 import prisma from "../../lib/prisma";
+import { getUser } from "../../lib/queries";
 import { dateStripped } from "../../lib/utils";
 
 export default function UserProfile({ user }) {
@@ -18,12 +19,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
         destination: "/",
       },
     };
-  const user = await prisma.user.findUnique({
-    where: { id },
-    include: {
-      samples: true,
-    },
-  });
+  const user = await getUser(id);
 
   return {
     props: {

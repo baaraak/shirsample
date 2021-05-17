@@ -21,7 +21,9 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
+  Comment Comment[]
   @@map(name: "users")
+  Proposal Proposal[]
 }
 
 model Sample {
@@ -45,6 +47,8 @@ model Proposal {
   id          Int      @id @default(autoincrement())
   sample      Sample   @relation(fields: [sampleId], references: [id])
   sampleId    Int
+  user        User     @relation(fields: [userId], references: [id])
+  userId      Int
   artist_name String   @db.VarChar(100)
   song_title  String   @db.VarChar(100)
   accepted    Boolean  @default(false)
@@ -57,6 +61,8 @@ model Proposal {
 model Comment {
   id        Int      @id @default(autoincrement())
   body      String   @db.VarChar(255)
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    Int?
   sample    Sample   @relation(fields: [sampleId], references: [id])
   sampleId  Int
   createdAt DateTime @default(now())

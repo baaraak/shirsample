@@ -1,6 +1,6 @@
-import { Router } from "next/dist/client/router";
 import React, { useState } from "react";
 import useUser from "../hooks/useUser";
+import $fetch from "../lib/fetch";
 
 const Upload: React.FC = () => {
   const [title, setTitle] = useState("");
@@ -10,13 +10,7 @@ const Upload: React.FC = () => {
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
-      const body = { title, description: content };
-      await fetch("/api/sample", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      await Router.push("/");
+      await $fetch("/api/sample", "POST", { title, description: content });
     } catch (error) {
       console.error(error);
     }
@@ -41,9 +35,6 @@ const Upload: React.FC = () => {
           value={content}
         />
         <input disabled={!content || !title} type="submit" value="Create" />
-        <a className="back" href="#" onClick={() => Router.push("/")}>
-          or Cancel
-        </a>
       </form>
     </>
   );

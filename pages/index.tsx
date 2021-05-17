@@ -17,7 +17,9 @@ const Index = ({ samples }: any) => {
       </Head>
       <>
         {samples.map((s) => (
-          <Link href={`/${s.id}`}>{s.title}</Link>
+          <Link key={s.id} href={`/${s.id}`}>
+            {s.title}
+          </Link>
         ))}
       </>
     </>

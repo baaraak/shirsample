@@ -1,5 +1,6 @@
 import { getSession } from "next-auth/client";
 import prisma from "../../../lib/prisma";
+import { createSample } from "../../../lib/queries";
 
 // POST /api/post
 // Required fields in body: title
@@ -8,12 +9,6 @@ export default async function handle(req, res) {
   const { title, description } = req.body;
 
   const session = await getSession({ req });
-  const result = await prisma.sample.create({
-    data: {
-      title,
-      description,
-      user: { connect: { id: session?.user?.id } },
-    },
-  });
+  const result = await createSample({ title, description }, session?.user?.id);
   res.json(result);
 }

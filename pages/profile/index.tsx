@@ -3,7 +3,9 @@ import { getSession } from "next-auth/client";
 import React, { useState } from "react";
 import useUser from "../../hooks/useUser";
 import prisma from "../../lib/prisma";
+import $fetch from "../../lib/fetch";
 import { dateStripped } from "../../lib/utils";
+import { getUser } from "../../lib/queries";
 
 export default function Profile({ user }) {
   const [name, setName] = useState(user.name);
@@ -12,13 +14,7 @@ export default function Profile({ user }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const body = { name, bio };
-      await fetch("/api/user", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      await Router.push("/");
+      await $fetch("/api/user", "PATCH", { name, bio });
     } catch (error) {
       console.error(error);
     }
@@ -53,12 +49,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   }
-  const user = await prisma.user.findUnique({
-    where: { id: session.user.id },
-    include: {
-      samples: true,
-    },
-  });
+  const user = await getUser(session.user.id);
 
   return {
     props: {
