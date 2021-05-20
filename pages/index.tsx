@@ -18,13 +18,37 @@ const Index = ({ samples }: any) => {
       <Head>
         <title>Next.js Blog Example with</title>
       </Head>
-      <h2>Try naming these samples</h2>
-      <select name="" id="" placeholder="Last Samples">
-        <option value="">Last Samples</option>
-      </select>
-      <select name="" id="" placeholder="All Genres">
-        <option value="">Last Samples</option>
-      </select>
+      <div className="flex mt-12 mb-8 items-center">
+        <h2 className="text-2xl font-bold">Try naming these samples</h2>
+        <div className="ml-auto">
+          <select
+            name=""
+            id=""
+            defaultValue="1"
+            className="border border-gray-300 rounded-full pr-14 pl-5 py-3 mr-4"
+          >
+            <option value="1">Last Samples</option>
+            <option value="">No Listened</option>
+            <option value="">Listened</option>
+            <option value="">Without Proposals</option>
+            <option value="">Random</option>
+          </select>
+          <select
+            name=""
+            id=""
+            defaultValue="1"
+            className="border border-gray-300 rounded-full pr-14 pl-5 py-3"
+          >
+            <option value="1">All Genres</option>
+            <option value="">Rock</option>
+            <option value="">Pop</option>
+            <option value="">Electro</option>
+            <option value="">Jaz</option>
+            <option value="">Country</option>
+            <option value="">Other</option>
+          </select>
+        </div>
+      </div>
       <div>
         {samples.map((s) => (
           <div
