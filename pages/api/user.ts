@@ -7,7 +7,7 @@ export default async (req, res) => {
     const { name, bio } = req.body;
 
     const { user } = await getSession({ req });
-    const updatedUser = await updateUser(user, { name, bio });
+    const updatedUser = await updateUser(user.id, { name, bio });
     res.json(updatedUser);
   }
 };

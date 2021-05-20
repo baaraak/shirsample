@@ -3,12 +3,14 @@ import { Provider } from "next-auth/client";
 import "../styles/index.css";
 import useUser from "../hooks/useUser";
 import Header from "../components/Header";
+import Banner from "../components/Banner";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider session={pageProps.session}>
-      <div className="flex flex-col py-8 max-w-6xl m-auto border border-t-0 border-gray-200 border-b-0 h-screen">
-        <Header />
+      <Header />
+      <div className="flex flex-col max-w-screen-lg w-full m-auto ">
+        <Banner />
         <Component {...pageProps} />
       </div>
     </Provider>

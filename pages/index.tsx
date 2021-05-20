@@ -4,24 +4,74 @@ import { dateStripped } from "../lib/utils";
 
 import Head from "next/head";
 import React from "react";
-import useUser from "../hooks/useUser";
 import prisma from "../lib/prisma";
 
 const Index = ({ samples }: any) => {
-  const user = useUser();
-
   return (
     <>
       <Head>
         <title>Next.js Blog Example with</title>
       </Head>
-      <>
+      <ul>
         {samples.map((s) => (
-          <Link key={s.id} href={`/${s.id}`}>
-            {s.title}
-          </Link>
+          <li key={s.id}>
+            <Link href={`/${s.id}`}>{s.title}</Link>
+            <Link href={`/profile/${s.user.id}`}>
+              <small>
+                <b>created by: {s.user.name}</b>
+              </small>
+            </Link>
+          </li>
         ))}
-      </>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad distinctio
+        libero inventore tenetur vero ab ut eligendi dicta, laudantium rerum
+        sapiente possimus voluptates harum. Animi tempora sequi sed qui ex.Lorem
+        ipsum dolor sit amet consectetur adipisicing elit. Ad distinctio libero
+        inventore tenetur vero ab ut eligendi dicta, laudantium rerum sapiente
+        possimus voluptates harum. Animi tempora sequi sed qui ex. Lorem ipsum
+        dolor sit amet consectetur adipisicing elit. Ad distinctio libero
+        inventore tenetur vero ab ut eligendi dicta, laudantium rerum sapiente
+        possimus voluptates harum. Animi tempora sequi sed qui ex. Lorem ipsum
+        dolor sit amet consectetur adipisicing elit. Ad distinctio libero
+        inventore tenetur vero ab ut eligendi dicta, laudantium rerum sapiente
+        possimus voluptates harum. Animi tempora sequi sed qui ex. Lorem ipsum
+        dolor sit amet consectetur adipisicing elit. Ad distinctio libero
+        inventore tenetur vero ab ut eligendi dicta, laudantium rerum sapiente
+        possimus voluptates harum. Animi tempora sequi sed qui ex. Lorem ipsum
+        dolor sit amet consectetur adipisicing elit. Ad distinctio libero
+        inventore tenetur vero ab ut eligendi dicta, laudantium rerum sapiente
+        possimus voluptates harum. Animi tempora sequi sed qui ex. Lorem ipsum
+        dolor sit amet consectetur adipisicing elit. Ad distinctio libero
+        inventore tenetur vero ab ut eligendi dicta, laudantium rerum sapiente
+        possimus voluptates harum. Animi tempora sequi sed qui ex. Lorem ipsum
+        dolor sit amet consectetur adipisicing elit. Ad distinctio libero
+        inventore tenetur vero ab ut eligendi dicta, laudantium rerum sapiente
+        possimus voluptates harum. Animi tempora sequi sed qui ex. Lorem ipsum
+        dolor sit amet consectetur adipisicing elit. Ad distinctio libero
+        inventore tenetur vero ab ut eligendi dicta, laudantium rerum sapiente
+        possimus voluptates harum. Animi tempora sequi sed qui ex. Lorem ipsum
+        dolor sit amet consectetur adipisicing elit. Ad distinctio libero
+        inventore tenetur vero ab ut eligendi dicta, laudantium rerum sapiente
+        possimus voluptates harum. Animi tempora sequi sed qui ex. Lorem ipsum
+        dolor sit amet consectetur adipisicing elit. Ad distinctio libero
+        inventore tenetur vero ab ut eligendi dicta, laudantium rerum sapiente
+        possimus voluptates harum. Animi tempora sequi sed qui ex. Lorem ipsum
+        dolor sit amet consectetur adipisicing elit. Ad distinctio libero
+        inventore tenetur vero ab ut eligendi dicta, laudantium rerum sapiente
+        possimus voluptates harum. Animi tempora sequi sed qui ex. Lorem ipsum
+        dolor sit amet consectetur adipisicing elit. Ad distinctio libero
+        inventore tenetur vero ab ut eligendi dicta, laudantium rerum sapiente
+        possimus voluptates harum. Animi tempora sequi sed qui ex. Lorem ipsum
+        dolor sit amet consectetur adipisicing elit. Ad distinctio libero
+        inventore tenetur vero ab ut eligendi dicta, laudantium rerum sapiente
+        possimus voluptates harum. Animi tempora sequi sed qui ex. Lorem ipsum
+        dolor sit amet consectetur adipisicing elit. Ad distinctio libero
+        inventore tenetur vero ab ut eligendi dicta, laudantium rerum sapiente
+        possimus voluptates harum. Animi tempora sequi sed qui ex. Lorem ipsum
+        dolor sit amet consectetur adipisicing elit. Ad distinctio libero
+        inventore tenetur vero ab ut eligendi dicta, laudantium rerum sapiente
+        possimus voluptates harum. Animi tempora sequi sed qui ex.
+      </ul>
     </>
   );
 };

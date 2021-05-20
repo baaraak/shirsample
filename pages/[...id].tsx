@@ -29,6 +29,7 @@ const Sample = ({ sample }) => {
     <>
       <br />
       sample page
+      <b>created by: {sample.user.name}</b>
       <br />
       <br />
       {sample.title}

@@ -9,10 +9,10 @@ export async function getUser(id) {
   });
 }
 
-export async function updateUser(user, data) {
+export async function updateUser(userId, data) {
   return prisma.user.update({
     where: {
-      id: user.id,
+      id: userId,
     },
     data,
   });

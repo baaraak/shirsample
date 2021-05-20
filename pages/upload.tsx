@@ -1,40 +1,76 @@
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 import useUser from "../hooks/useUser";
 import $fetch from "../lib/fetch";
 
 const Upload: React.FC = () => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const user = useUser();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const [recordSample, setRecordSample] = useState(false);
 
-  const submitData = async (e: React.SyntheticEvent) => {
-    e.preventDefault();
+  const submitData = async (data) => {
+    console.log(data);
+
+    const f = data.sample[0];
+    var r = new FileReader();
+    r.onload = function (e) {
+      var contents = e.target.result;
+      const size = f.size > 5242880;
+      const type = TYPES.includes(f.type);
+    };
+    r.readAsText(f);
+    return;
+
     try {
-      await $fetch("/api/sample", "POST", { title, description: content });
+      await $fetch("/api/sample", "POST", data);
     } catch (error) {
       console.error(error);
     }
   };
+  console.log(errors);
 
   return (
     <>
-      <form onSubmit={submitData}>
-        <h1>New Draft</h1>
-        <input
-          autoFocus
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Title"
-          type="text"
-          value={title}
-        />
+      <form onSubmit={handleSubmit(submitData)}>
+        <input placeholder="Title" {...register("title")} />
         <textarea
           cols={50}
-          onChange={(e) => setContent(e.target.value)}
           placeholder="Content"
           rows={8}
-          value={content}
+          {...register("description")}
         />
-        <input disabled={!content || !title} type="submit" value="Create" />
+
+        {recordSample ? (
+          <div>press to record</div>
+        ) : (
+          <input
+            type="file"
+            {...register("sample", { required: true })}
+            accept="audio/mp3"
+          />
+        )}
+        <input
+          type="radio"
+          id="record"
+          name="gender"
+          checked={recordSample}
+          onClick={() => setRecordSample(!recordSample)}
+        />
+        <label htmlFor="record">Record</label>
+        <input
+          type="radio"
+          id="upload"
+          name="gender"
+          value="upload"
+          onClick={() => setRecordSample(!recordSample)}
+          checked={!recordSample}
+        />
+        <label htmlFor="upload">Upload</label>
+
+        <input type="submit" />
       </form>
     </>
   );
