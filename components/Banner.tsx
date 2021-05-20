@@ -30,7 +30,13 @@ export default function Banner() {
           Try naming the other songs!
         </div>
       </div>
-      <Image src="/banner.png" alt="singing woman" width="500" height="300" />
+      <Image
+        src="/banner.png"
+        alt="singing woman"
+        className="banner__image"
+        width="500"
+        height="300"
+      />
 
       <div className="w-full flex justify-center">
         <Button

@@ -32,7 +32,7 @@ export default function Header() {
           </Link>
         </nav>
         <div className="flex items-center">
-          <Button className="flex px-8 py-3 rounded-full" onClick={() => {}}>
+          <Button className="flex px-8 py-3 rounded-full">
             <FiMic className="text-2xl mr-4" />
             Post Sample
           </Button>
