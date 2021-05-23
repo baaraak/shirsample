@@ -9,7 +9,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider session={pageProps.session}>
       <Header />
-      <div className="flex flex-col max-w-screen-lg w-full m-auto ">
+      <div className="flex flex-col max-w-screen-lg w-full m-auto pb-6">
         <Banner />
         <Component {...pageProps} />
       </div>

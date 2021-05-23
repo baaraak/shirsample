@@ -41,6 +41,7 @@ select {
     -moz-appearance: none;
     appearance: none;
     background: url('/icon.svg') 88% / 10% no-repeat transparent;
+    
   }
   
   
@@ -52,3 +53,5 @@ select {
   }
   
   
+
+
