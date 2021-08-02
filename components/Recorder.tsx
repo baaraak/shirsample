@@ -4,13 +4,14 @@ import useRecorder from "../hooks/useRecorder";
 import Button from "./Button";
 
 function Recorder({ onChange }) {
-  let { audioURL, isRecording, startRecording, stopRecording } = useRecorder();
+  let { audioValue, isRecording, startRecording, stopRecording } =
+    useRecorder();
 
   useEffect(() => {
-    if (audioURL) {
-      onChange(audioURL);
+    if (audioValue) {
+      onChange(audioValue);
     }
-  }, [audioURL]);
+  }, [audioValue]);
 
   return (
     <div className="grid grid-cols-2 gap-5 mb-4">

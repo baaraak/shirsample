@@ -40,7 +40,7 @@ select {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    background: url('/icon.svg') 88% / 10% no-repeat transparent;
+    background: url('/icon.svg') calc(100% - 20px) / 20px no-repeat transparent;
     
   }
   

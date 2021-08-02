@@ -11,6 +11,8 @@ import {
   AiOutlineShareAlt,
 } from "react-icons/ai";
 import Button from "../components/Button";
+import { MUSIC_GENRES } from "../lib/music-genres";
+import Select from "../components/Select";
 
 const Index = ({ samples }: any) => {
   return (
@@ -22,41 +24,27 @@ const Index = ({ samples }: any) => {
         <div className="flex mt-12 mb-8 items-center">
           <h2 className="text-2xl font-bold">Try naming these samples</h2>
           <div className="ml-auto">
-            <select
-              name=""
-              id=""
-              defaultValue="1"
-              className="border border-gray-300 rounded-full pr-14 pl-5 py-3 mr-4"
-            >
+            <Select defaultValue="1" className="mr-4">
               <option value="1">Last Samples</option>
               <option value="">No Listened</option>
               <option value="">Listened</option>
               <option value="">Without Proposals</option>
               <option value="">Random</option>
-            </select>
-            <select
-              name=""
-              id=""
-              defaultValue="1"
-              className="border border-gray-300 rounded-full pr-14 pl-5 py-3"
-            >
-              <option value="1">All Genres</option>
-              <option value="">Rock</option>
-              <option value="">Pop</option>
-              <option value="">Electro</option>
-              <option value="">Jaz</option>
-              <option value="">Country</option>
-              <option value="">Other</option>
-            </select>
+            </Select>
+            <Select>
+              <option value="All">All Genre</option>
+              {MUSIC_GENRES.map((v) => (
+                <option value={v}>{v}</option>
+              ))}
+            </Select>
           </div>
         </div>
         <div>
           {samples.map((s) => (
             <div
               key={s.id}
-              className="flex rounded-3xl mb-10 p-4 relative"
+              className="flex rounded-3xl mb-10 p-4 relative bg-gray-50 border border-gray-200"
               // TODO: move color to tailwind theme
-              style={{ background: "#F6F7FB" }}
             >
               <div className="h-24 w-24 bg-gray-200 mr-6 rounded-lg">
                 <img src={s.user.image} alt="" />

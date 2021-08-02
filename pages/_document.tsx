@@ -11,7 +11,7 @@ export default class MyDocument extends Document {
             rel="stylesheet"
           />
         </Head>
-        <body class="antialiased">
+        <body className="antialiased ">
           <Main />
           <NextScript />
         </body>

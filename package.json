@@ -8,10 +8,13 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@azure/storage-blob": "^12.5.0",
     "@prisma/client": "^2.22.1",
+    "aws-sdk": "^2.913.0",
     "bcrypt": "^5.0.1",
     "classnames": "2.3.1",
     "date-fns": "2.10.0",
+    "formidable": "^1.2.2",
     "gray-matter": "4.0.2",
     "next": "latest",
     "next-auth": "^3.23.0",

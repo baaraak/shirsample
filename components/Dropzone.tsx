@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React from "react";
 
 const Dropzone = ({ onChange }) => {
   const fileDrop = (e) => {
@@ -22,7 +22,6 @@ const Dropzone = ({ onChange }) => {
           Drag & Drop files here or click to select file
         </div>
         <input
-          accept="audio/*"
           type="file"
           onChange={filesSelected}
           className="absolute inset-0 opacity-0 w-full cursor-pointer"
