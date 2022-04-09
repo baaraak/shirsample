@@ -1,20 +1,20 @@
-import { GetServerSideProps } from "next";
-import { getSession } from "next-auth/client";
-import React, { useState } from "react";
-import useUser from "../../hooks/useUser";
-import prisma from "../../lib/prisma";
-import $fetch from "../../lib/fetch";
-import { dateStripped } from "../../lib/utils";
-import { getUser } from "../../lib/queries";
+import { GetServerSideProps } from 'next';
+import { getSession } from 'next-auth/react';
+import React, { useState } from 'react';
+import useUser from '../../hooks/useUser';
+import prisma from '../../lib/prisma';
+import $fetch from '../../lib/fetch';
+import { dateStripped } from '../../lib/utils';
+import { getUser } from '../../lib/queries';
 
 export default function Profile({ user }) {
   const [name, setName] = useState(user.name);
-  const [bio, setBio] = useState(user.bio || "");
+  const [bio, setBio] = useState(user.bio || '');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await $fetch("/api/user", "PATCH", { name, bio });
+      await $fetch('/api/user', 'PATCH', { name, bio });
     } catch (error) {
       console.error(error);
     }
@@ -45,7 +45,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (!session) {
     return {
       redirect: {
-        destination: "/",
+        destination: '/',
       },
     };
   }

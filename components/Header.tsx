@@ -1,11 +1,11 @@
-import React from "react";
-import Link from "next/link";
-import { AiOutlineUser } from "react-icons/ai";
-import { FiSearch, FiMic } from "react-icons/fi";
-import Logo from "../components/Logo";
-import { signOut, useSession } from "next-auth/client";
-import useUser from "../hooks/useUser";
-import Button from "./Button";
+import React from 'react';
+import Link from 'next/link';
+import { AiOutlineUser } from 'react-icons/ai';
+import { FiSearch, FiMic } from 'react-icons/fi';
+import Logo from '../components/Logo';
+import { signOut, useSession } from 'next-auth/react';
+import useUser from '../hooks/useUser';
+import Button from './Button';
 
 export default function Header() {
   const user = useUser();

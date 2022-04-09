@@ -1,10 +1,10 @@
-import { GetServerSideProps } from "next";
-import { getSession } from "next-auth/client";
-import React from "react";
-import useUser from "../../hooks/useUser";
-import prisma from "../../lib/prisma";
-import { getUser } from "../../lib/queries";
-import { dateStripped } from "../../lib/utils";
+import { GetServerSideProps } from 'next';
+import { getSession } from 'next-auth/react';
+import React from 'react';
+import useUser from '../../hooks/useUser';
+import prisma from '../../lib/prisma';
+import { getUser } from '../../lib/queries';
+import { dateStripped } from '../../lib/utils';
 
 export default function UserProfile({ user }) {
   return <div>{user.name}</div>;
@@ -16,7 +16,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   if (!Number.isInteger(id))
     return {
       redirect: {
-        destination: "/",
+        destination: '/',
       },
     };
   const user = await getUser(id);

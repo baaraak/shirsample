@@ -1,9 +1,9 @@
-import { getSession } from "next-auth/client";
-import prisma from "../../lib/prisma";
-import { createComment } from "../../lib/queries";
+import { getSession } from 'next-auth/react';
+import prisma from '../../lib/prisma';
+import { createComment } from '../../lib/queries';
 
 export default async (req, res) => {
-  if (req.method === "POST") {
+  if (req.method === 'POST') {
     const { body, sampleId } = req.body;
 
     const { user } = await getSession({ req });

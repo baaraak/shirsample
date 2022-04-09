@@ -1,6 +1,6 @@
-import { getSession } from "next-auth/client";
-import prisma from "../../../lib/prisma";
-import { createSample } from "../../../lib/queries";
+import { getSession } from 'next-auth/react';
+import prisma from '../../../lib/prisma';
+import { createSample } from '../../../lib/queries';
 
 export const config = {
   api: {
@@ -11,7 +11,7 @@ export const config = {
 // Required fields in body: title
 // Optional fields in body: content
 export default async function handle(req, res) {
-  if (req.method === "POST") {
+  if (req.method === 'POST') {
     console.log(req.body.myFile);
 
     const { title, description, language, genre, sample } = req.body;

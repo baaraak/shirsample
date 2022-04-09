@@ -1,9 +1,9 @@
-import { getSession } from "next-auth/client";
-import prisma from "../../lib/prisma";
-import { createProposal } from "../../lib/queries";
+import { getSession } from 'next-auth/react';
+import prisma from '../../lib/prisma';
+import { createProposal } from '../../lib/queries';
 
 export default async (req, res) => {
-  if (req.method === "POST") {
+  if (req.method === 'POST') {
     const { artist_name, song_title, sampleId } = req.body;
 
     const { user } = await getSession({ req });

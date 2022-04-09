@@ -34,7 +34,7 @@ const Index = ({ samples }: any) => {
             <Select>
               <option value="All">All Genre</option>
               {MUSIC_GENRES.map((v) => (
-                <option value={v}>{v}</option>
+                <option value={v} key={v}>{v}</option>
               ))}
             </Select>
           </div>

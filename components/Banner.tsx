@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { AiOutlineClose } from "react-icons/ai";
-import Image from "next/image";
-import Button from "./Button";
-import useBanner from "../hooks/useBanner";
+import React, { useState } from 'react';
+import { AiOutlineClose } from 'react-icons/ai';
+import Image from 'next/image';
+import Button from './Button';
+import useBanner from '../hooks/useBanner';
 
 export default function Banner() {
   const { isVisible, handleClose } = useBanner();
 
-  if (!isVisible) return false;
+  if (!isVisible) return null;
 
   return (
     <div className="flex items-center justify-between flex-wrap slideDownIn">
