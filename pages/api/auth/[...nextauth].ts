@@ -4,10 +4,6 @@ import EmailProvider from 'next-auth/providers/email';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import prisma from '../../../lib/prisma';
 
-console.log('***********************');
-console.log(process.env.GOOGLE_CLIENT_ID);
-console.log(process.env.GOOGLE_CLIENT_SECRET);
-console.log('***********************');
 export default NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [

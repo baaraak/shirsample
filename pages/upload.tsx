@@ -1,18 +1,25 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import { AiOutlineCloudUpload, AiOutlineDelete } from "react-icons/ai";
-import { GiMicrophone } from "react-icons/gi";
-import Button from "../components/Button";
-import Dropzone from "../components/Dropzone";
-import Recorder from "../components/Recorder";
-import Select from "../components/Select";
-import useUser from "../hooks/useUser";
-import $fetch from "../lib/fetch";
-import { LANGUAGES } from "../lib/languages";
-import { MUSIC_GENRES } from "../lib/music-genres";
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { AiOutlineCloudUpload, AiOutlineDelete } from 'react-icons/ai';
+import { GiMicrophone } from 'react-icons/gi';
+import Button from '../components/Button';
+import Dropzone from '../components/Dropzone';
+import Recorder from '../components/Recorder';
+import Select from '../components/Select';
+import useUser from '../hooks/useUser';
+import $fetch from '../lib/fetch';
+import { LANGUAGES } from '../lib/languages';
+import { MUSIC_GENRES } from '../lib/music-genres';
 
 const TYPES = [];
-const selectedClasses = "text-red-500 cursor-auto bg-white shadow";
+const selectedClasses = 'text-red-500 cursor-auto bg-white shadow';
+
+async function getSignature() {
+  const response = await fetch('/api/sign');
+  const data = await response.json();
+  const { signature, timestamp } = data;
+  return { signature, timestamp };
+}
 
 const Upload: React.FC = () => {
   const { register, handleSubmit } = useForm();
@@ -21,38 +28,45 @@ const Upload: React.FC = () => {
   const [errors, setErrors] = useState();
 
   const submitData = async (data) => {
-    console.log("in");
-    if (!audioFile) return setErrors("Please add audio sample.");
-    console.log("in2");
+    console.log('in');
+    if (!audioFile) return setErrors('Please add audio sample.');
+    console.log('in2');
     const fileReader = new FileReader();
     fileReader.onload = function (e) {
       const size = audioFile.size < 5242880;
-      const type = audioFile.type.includes("audio/");
+      const type = audioFile.type.includes('audio/');
 
       // if (!type) return setErrors("Only audio file supported");
-      if (!size) return setErrors("File must be less than 5mb");
+      if (!size) return setErrors('File must be less than 5mb');
     };
     fileReader.readAsText(audioFile);
+    const url = `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/video/upload`;
 
+    const { signature, timestamp } = await getSignature();
     const formData = new FormData();
-    console.log("after2");
+    formData.append('file', audioFile);
+    formData.append('signature', signature);
+    formData.append('timestamp', timestamp);
+    formData.append('folder', 'baraki');
+    formData.append('format', 'mp3');
+    formData.append('api_key', process.env.CLOUDINARY_API_KEY);
 
-    formData.append("file", audioFile);
-    formData.append("Content-Type", audioFile.type);
-    console.log("in3");
-
-    const upload = await fetch("/api/sample/file", {
-      method: "POST",
+    const response = await fetch(url, {
+      method: 'post',
       body: formData,
     });
 
-    if (upload.ok) {
-      console.log("Uploaded successfully!");
-    } else {
-      console.error("Upload failed.");
-    }
+    const D = await response.json();
 
-    console.log({ upload });
+    console.log(D);
+
+    // if (upload.ok) {
+    //   console.log('Uploaded successfully!');
+    // } else {
+    //   console.error('Upload failed.');
+    // }
+
+    // console.log({ upload });
 
     // try {
     //   await $fetch("/api/sample", "POST", formData);
@@ -68,7 +82,7 @@ const Upload: React.FC = () => {
       </h2>
       <form onSubmit={handleSubmit(submitData)} className="flex flex-col mt-6">
         <div className="flex mb-4">
-          <Select {...register("genre")} className="block w-full">
+          <Select {...register('genre')} className="block w-full">
             <option value="All">Genre</option>
             {MUSIC_GENRES.map((v) => (
               <option key={v} value={v}>
@@ -77,7 +91,7 @@ const Upload: React.FC = () => {
             ))}
           </Select>
           <Select
-            {...register("language")}
+            {...register('language')}
             defaultValue="1"
             className="ml-4 block w-full"
           >
@@ -93,14 +107,14 @@ const Upload: React.FC = () => {
           type="text"
           className="rounded-full border-gray-300 border pl-6 py-3 mb-4"
           placeholder="Title"
-          {...register("title")}
+          {...register('title')}
         />
 
         <textarea
           placeholder="Content"
           className="rounded-3xl border-gray-300 border pl-6 py-3 mb-2"
           rows={4}
-          {...register("description")}
+          {...register('description')}
         />
 
         <div className="bg-red-100 rounded-lg flex p-1 my-4">
@@ -112,7 +126,7 @@ const Upload: React.FC = () => {
             className={`flex flex-1 rounded-lg items-center py-2 font-bold justify-center ${
               !recordSampleMode
                 ? selectedClasses
-                : "text-gray-700 hover:text-red-500"
+                : 'text-gray-700 hover:text-red-500'
             }`}
           >
             <AiOutlineCloudUpload className="mr-2 text-lg" /> Upload
@@ -125,7 +139,7 @@ const Upload: React.FC = () => {
             className={`flex flex-1 rounded-lg items-center font-bold py-2 justify-center ml-1 ${
               recordSampleMode
                 ? selectedClasses
-                : "text-gray-700 hover:text-red-500"
+                : 'text-gray-700 hover:text-red-500'
             }`}
           >
             <GiMicrophone className="mr-2 text-lg" /> Record

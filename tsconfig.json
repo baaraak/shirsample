@@ -16,5 +16,11 @@
     "incremental": true
   },
   "exclude": ["node_modules"],
-  "include": ["next-auth.d.ts", "next-env.d.ts", "**/*.ts", "**/*.tsx"]
+  "include": [
+    "next-auth.d.ts",
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "next.config.js"
+  ]
 }

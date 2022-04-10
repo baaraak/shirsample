@@ -1,18 +1,18 @@
-import { GetServerSideProps } from "next";
-import Link from "next/link";
-import { dateStripped } from "../lib/utils";
+import { GetServerSideProps } from 'next';
+import Link from 'next/link';
+import { dateStripped } from '../lib/utils';
 
-import Head from "next/head";
-import React from "react";
-import prisma from "../lib/prisma";
+import Head from 'next/head';
+import React from 'react';
+import prisma from '../lib/prisma';
 import {
   AiFillQuestionCircle,
   AiOutlinePlayCircle,
   AiOutlineShareAlt,
-} from "react-icons/ai";
-import Button from "../components/Button";
-import { MUSIC_GENRES } from "../lib/music-genres";
-import Select from "../components/Select";
+} from 'react-icons/ai';
+import Button from '../components/Button';
+import { MUSIC_GENRES } from '../lib/music-genres';
+import Select from '../components/Select';
 
 const Index = ({ samples }: any) => {
   return (
@@ -34,7 +34,9 @@ const Index = ({ samples }: any) => {
             <Select>
               <option value="All">All Genre</option>
               {MUSIC_GENRES.map((v) => (
-                <option value={v} key={v}>{v}</option>
+                <option value={v} key={v}>
+                  {v}
+                </option>
               ))}
             </Select>
           </div>
