@@ -1,17 +1,20 @@
-import { NextApiHandler } from 'next';
 import NextAuth from 'next-auth';
-import EmailProvider from 'next-auth/providers/email';
 import GoogleProvider from 'next-auth/providers/google';
+import EmailProvider from 'next-auth/providers/email';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import prisma from '../../../lib/prisma';
-import { updateUser } from '../../../lib/queries';
 
-const authHandler: NextApiHandler = (req, res) => NextAuth(req, res, options);
-export default authHandler;
-
-const options = {
-  // debug: true,
+console.log('***********************');
+console.log(process.env.GOOGLE_CLIENT_ID);
+console.log(process.env.GOOGLE_CLIENT_SECRET);
+console.log('***********************');
+export default NextAuth({
+  adapter: PrismaAdapter(prisma),
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
     EmailProvider({
       server: {
         host: process.env.EMAIL_SERVER_HOST,
@@ -21,29 +24,7 @@ const options = {
           pass: process.env.EMAIL_SERVER_PASSWORD,
         },
       },
-      from: 'admin@example.com',
-    }),
-    GoogleProvider({
-      clientId: process.env.GOOGLE_ID,
-      clientSecret: process.env.GOOGLE_SECRET,
+      from: process.env.EMAIL_FROM,
     }),
   ],
-  callbacks: {
-    session: async (session, user) => {
-      session.user = user;
-      return Promise.resolve(session);
-    },
-  },
-  events: {
-    createUser: async (user) => {
-      if (!user.name) {
-        updateUser(user.id, { name: user.email.split('@')[0] });
-      }
-      console.log('event user:', user);
-    },
-  },
-  pages: {
-    newUser: '/profile',
-  },
-  adapter: PrismaAdapter(prisma),
-};
+});

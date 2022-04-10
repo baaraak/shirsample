@@ -32,29 +32,28 @@ export default function Header() {
           </Link>
         </nav>
         <div className="flex items-center">
-          <Link href="/upload">
-            <Button className="flex px-8 py-3 rounded-full">
-              <>
-                <FiMic className="text-2xl mr-4" />
-                Post Sample
-              </>
-            </Button>
-          </Link>
-
           <div className="mx-7">
-            <button className="text-2xl text-red-500 cursor-pointer transition transform hover:scale-105">
+            <button className="text-2xl text-red-500 cursor-pointer transition transform">
               <FiSearch />
             </button>
           </div>
           {user ? (
-            <button className="text-3xl text-red-500 border border-red-500 rounded-full p-1 cursor-pointer  hover:scale-105 transform transition">
-              <AiOutlineUser />
-            </button>
-          ) : (
             <>
-              <AiOutlineUser />
-              <Link href="/api/auth/signin">login</Link>
+              <Link href="/upload">
+                <Button className="flex px-8 py-3 rounded-full">
+                  <>
+                    <FiMic className="text-2xl mr-4" />
+                    Post Sample
+                  </>
+                </Button>
+              </Link>
+
+              <button className="text-3xl text-red-500 border border-red-500 rounded-full p-1 cursor-pointer  hover:scale-105 transform transition">
+                <AiOutlineUser />
+              </button>
             </>
+          ) : (
+            <Link href="/api/auth/signin">Login | Signup</Link>
           )}
         </div>
       </div>

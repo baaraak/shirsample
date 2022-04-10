@@ -6,8 +6,8 @@ export default async (req, res) => {
   if (req.method === 'POST') {
     const { artist_name, song_title, sampleId } = req.body;
 
-    const { user } = await getSession({ req });
-    await createProposal({ artist_name, song_title }, user?.id, sampleId);
+    // const { user } = await getSession({ req });
+    await createProposal({ artist_name, song_title }, 'user?.id', sampleId);
     res.json({ success: true });
   }
 };
