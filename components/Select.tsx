@@ -1,9 +1,12 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement } from 'react';
 
-interface Props {}
+interface Props {
+  className: string;
+  children: React.HTMLElement | React.ReactElement;
+}
 
 export default React.forwardRef(function Select(
-  { className, children, ...props },
+  { className, children, ...props }: Props,
   ref
 ): ReactElement {
   return (

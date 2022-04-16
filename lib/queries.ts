@@ -1,11 +1,8 @@
-import prisma from "./prisma";
+import prisma from './prisma';
 
 export async function getUser(id) {
   return prisma.user.findUnique({
     where: { id },
-    include: {
-      samples: true,
-    },
   });
 }
 

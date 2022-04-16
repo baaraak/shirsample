@@ -1,4 +1,5 @@
 const cloudinary = require('cloudinary').v2;
+import { CLOUDINARY_SAMPLES_FOLDER_NAME } from '../../../lib/constants';
 
 export default function signature(req, res) {
   // Get the timestamp in seconds
@@ -8,7 +9,7 @@ export default function signature(req, res) {
   const signature = cloudinary.utils.api_sign_request(
     {
       timestamp: timestamp,
-      folder: 'baraki',
+      folder: CLOUDINARY_SAMPLES_FOLDER_NAME,
       format: 'mp3',
     },
     process.env.CLOUDINARY_API_SECRET

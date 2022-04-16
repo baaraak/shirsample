@@ -10,12 +10,13 @@ import useUser from '../hooks/useUser';
 import $fetch from '../lib/fetch';
 import { LANGUAGES } from '../lib/languages';
 import { MUSIC_GENRES } from '../lib/music-genres';
+import { CLOUDINARY_SAMPLES_FOLDER_NAME } from '../lib/constants';
 
 const TYPES = [];
 const selectedClasses = 'text-red-500 cursor-auto bg-white shadow';
 
 async function getSignature() {
-  const response = await fetch('/api/sign');
+  const response = await $fetch('/api/cloudinary/sign-sample');
   const data = await response.json();
   const { signature, timestamp } = data;
   return { signature, timestamp };
@@ -28,9 +29,8 @@ const Upload: React.FC = () => {
   const [errors, setErrors] = useState();
 
   const submitData = async (data) => {
-    console.log('in');
     if (!audioFile) return setErrors('Please add audio sample.');
-    console.log('in2');
+
     const fileReader = new FileReader();
     fileReader.onload = function (e) {
       const size = audioFile.size < 5242880;
@@ -47,32 +47,31 @@ const Upload: React.FC = () => {
     formData.append('file', audioFile);
     formData.append('signature', signature);
     formData.append('timestamp', timestamp);
-    formData.append('folder', 'baraki');
+    formData.append('folder', CLOUDINARY_SAMPLES_FOLDER_NAME);
     formData.append('format', 'mp3');
     formData.append('api_key', process.env.CLOUDINARY_API_KEY);
 
-    const response = await fetch(url, {
-      method: 'post',
-      body: formData,
-    });
+    try {
+      // POST to Cloudinary api to upload sample audio
+      const response = await fetch(url, {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await response.json();
+      if (data.error) throw new Error(data.error);
+      // POST to server to create sample
+      const { secure_url, duration } = data;
 
-    const D = await response.json();
+      await $fetch('/api/sample', 'POST', {
+        url: secure_url,
+        duration,
+        ...data,
+      });
+    } catch (error) {
+      console.log('in error');
 
-    console.log(D);
-
-    // if (upload.ok) {
-    //   console.log('Uploaded successfully!');
-    // } else {
-    //   console.error('Upload failed.');
-    // }
-
-    // console.log({ upload });
-
-    // try {
-    //   await $fetch("/api/sample", "POST", formData);
-    // } catch (error) {
-    //   console.error(error);
-    // }
+      console.error(error);
+    }
   };
 
   return (

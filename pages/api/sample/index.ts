@@ -2,14 +2,6 @@ import { getSession } from 'next-auth/react';
 import prisma from '../../../lib/prisma';
 import { createSample } from '../../../lib/queries';
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-// POST /api/post
-// Required fields in body: title
-// Optional fields in body: content
 export default async function handle(req, res) {
   if (req.method === 'POST') {
     console.log(req.body.myFile);
