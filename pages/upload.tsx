@@ -10,10 +10,11 @@ import { MUSIC_GENRES } from '../lib/music-genres';
 import { CLOUDINARY_SAMPLES_FOLDER_NAME } from '../lib/constants';
 
 type FormData = {
+  audio?: string;
   title: string;
   description: string;
-  language: string;
-  genre: string;
+  language?: string;
+  genre?: string;
 };
 
 async function getSignature() {
@@ -24,23 +25,40 @@ async function getSignature() {
 }
 
 const Upload: React.FC = () => {
-  const { register, handleSubmit } = useForm<FormData>();
+  const {
+    register,
+    handleSubmit,
+    setError,
+    clearErrors,
+    formState: { errors },
+  } = useForm<FormData>();
   const [recordSampleMode, setRecordSampleMode] = useState(false);
   const [audioFile, setAudioFile] = useState<File | Blob>();
-  const [errors, setErrors] = useState('');
+
+  const onChangeAudio = (file: File | Blob) => {
+    setAudioFile(file);
+    clearErrors('audio');
+  };
 
   const submitData = async (data: FormData) => {
-    if (!!data.title || !audioFile)
-      return setErrors('You must add a title and select an audio file');
+    clearErrors('audio');
 
-    // Read the audio file sample and upload it to cloudinary
-    const fileReader = new FileReader();
-    fileReader.onload = function (e) {
-      // validate file size
-      const size = audioFile.size < 5242880;
-      if (!size) return setErrors('File must be less than 15mb');
-    };
-    fileReader.readAsText(audioFile);
+    if (!data.title)
+      return setError('title', {
+        message: 'Title is a required field',
+      });
+    if (!audioFile)
+      return setError('audio', {
+        type: 'custom',
+        message: 'You must add an audio file',
+      });
+
+    // validate file size under 15mb
+    if (audioFile.size > 15728640)
+      return setError('audio', {
+        type: 'custom',
+        message: 'File must be less than 15mb',
+      });
 
     // Get cloudinary security signature
     const { signature, timestamp } = await getSignature();
@@ -60,15 +78,19 @@ const Upload: React.FC = () => {
         method: 'POST',
         body: formData,
       });
-      const data = await response.json();
-      if (data.error) throw new Error(data.error);
+      const cloudinaryResponse = await response.json();
+      if (cloudinaryResponse.error) throw new Error(cloudinaryResponse.error);
       // POST to create sample
-      const { secure_url, duration } = data;
+      const { secure_url, duration } = cloudinaryResponse;
+      const { title, description, language, genre } = data;
 
       await $fetch('/api/sample', 'POST', {
+        title,
+        description,
+        language: language === '-1' ? undefined : language,
+        genre: genre === '-1' ? undefined : genre,
         url: secure_url,
         duration,
-        ...data,
       });
     } catch (error) {
       console.log('in error');
@@ -76,6 +98,7 @@ const Upload: React.FC = () => {
       console.error(error);
     }
   };
+  console.log(errors);
 
   return (
     <div className="flex flex-col">
@@ -85,7 +108,7 @@ const Upload: React.FC = () => {
       <form onSubmit={handleSubmit(submitData)} className="flex flex-col mt-6">
         <div className="grid grid-cols-2 gap-4 mb-4">
           <select {...register('genre')} className="select select-bordered">
-            <option value="All">Genre</option>
+            <option value="-1">Genre</option>
             {MUSIC_GENRES.map((v) => (
               <option key={v} value={v}>
                 {v}
@@ -93,7 +116,7 @@ const Upload: React.FC = () => {
             ))}
           </select>
           <select {...register('language')} className="select select-bordered">
-            <option value="1">Language</option>
+            <option value="-1">Language</option>
             {LANGUAGES.map((l) => (
               <option key={l.code} value={l.code}>
                 {l.native}
@@ -141,12 +164,12 @@ const Upload: React.FC = () => {
         </div>
 
         {audioFile ? (
-          <>
+          <div className="mb-4">
             <button
-              className="btn btn-error mb-2 btn-outline"
+              className="btn btn-error mb-2 btn-outline w-full"
               onClick={() => {
-                setErrors('');
-                setAudioFile(undefined);
+                clearErrors('audio');
+                onChangeAudio(undefined);
               }}
             >
               <AiOutlineDelete className="text-xl mr-2" />
@@ -157,15 +180,19 @@ const Upload: React.FC = () => {
               className="w-full"
               src={URL.createObjectURL(audioFile)}
             ></audio>
-          </>
+          </div>
         ) : recordSampleMode ? (
-          <Recorder onChange={setAudioFile} />
+          <Recorder onChange={onChangeAudio} />
         ) : (
-          <Dropzone onChange={(files) => setAudioFile(files[0])} />
+          <Dropzone onChange={(files) => onChangeAudio(files[0])} />
         )}
-        {errors && (
+        {Object.keys(errors).length > 0 && (
           <div className="bg-bg-red-100 items-center text-red-500 leading-none lg:rounded-full flex lg:inline-flex mb-4">
-            <span className="mr-2 text-left flex-auto">{errors}</span>
+            <ul className="mr-2 text-left flex-auto">
+              {Object.values(errors).map((e, i) => (
+                <li key={i}>{e.message}</li>
+              ))}
+            </ul>
           </div>
         )}
         <button type="submit" className="btn btn-primary">

@@ -1,3 +1,4 @@
+import { Sample } from '../types/sample';
 import prisma from './prisma';
 
 export async function getUser(id) {
@@ -26,7 +27,7 @@ export async function getSample(id) {
   });
 }
 
-export async function createSample(data, userId) {
+export async function createSample(data: Sample, userId: string) {
   return prisma.sample.create({
     data: {
       ...data,

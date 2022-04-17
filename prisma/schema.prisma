@@ -17,6 +17,8 @@ model Sample {
   title       String?    @db.VarChar(100)
   description String?    @db.VarChar(255)
   genre       String?
+  url         String
+  duration    String
   language    String?    @db.Char(2)
   closed      Boolean    @default(false)
   proposals   Proposal[]

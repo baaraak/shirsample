@@ -4,6 +4,7 @@ import { AiOutlineUser } from 'react-icons/ai';
 import { FiMic } from 'react-icons/fi';
 import Logo from '../components/Logo';
 import useUser from '../hooks/useUser';
+import { signOut } from 'next-auth/react';
 
 export default function Header() {
   const user = useUser();
@@ -12,6 +13,9 @@ export default function Header() {
     <div className="py-3 px-4 flex shadow-header accent-content bg-base-300    z-10 relative">
       <div className="flex max-w-screen-lg w-full m-auto justify-between items-center">
         <Logo />
+        <div className="link" onClick={() => signOut()}>
+          logout
+        </div>
         <nav className="flex items-center">
           <Link href="/">
             <a className="text-lg font-light mx-8 hover:text-secondary transition">

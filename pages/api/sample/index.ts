@@ -1,20 +1,42 @@
 import { getSession } from 'next-auth/react';
-import prisma from '../../../lib/prisma';
 import { createSample } from '../../../lib/queries';
+import { object, string } from 'yup';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
-export default async function handle(req, res) {
+let userSchema = object({
+  url: string().url().required(),
+  duration: string().required(),
+  title: string().required(),
+  description: string().optional(),
+  language: string().optional(),
+  genre: string().optional(),
+});
+
+// parse and assert validity
+export default async function handle(
+  req: NextApiRequest,
+  res?: NextApiResponse
+) {
   if (req.method === 'POST') {
-    console.log(req.body.myFile);
-
-    const { title, description, language, genre, sample } = req.body;
-
-    console.log({ title, description, language, genre, sample });
-    return res.json(true);
-    // // const session = await getSession({ req });
-    // // const result = await createSample(
-    // //   { title, description },
-    // //   session?.user?.id
-    // // );
-    // res.json(result);
+    try {
+      await userSchema.validate(req.body);
+      const { url, duration, title, description, language, genre } = req.body;
+      const session = await getSession({ req });
+      const userId = session?.user?.id;
+      if (!userId) throw new Error('User not logged in');
+      const result = await createSample(
+        { url, duration, title, description, language, genre },
+        userId
+      );
+      console.log('***********************');
+      console.log({ result });
+      console.log('***********************');
+      res.status(200).json(result);
+    } catch (err) {
+      console.log({ err });
+      return res.json({
+        errors: err.errors || 'Server error',
+      });
+    }
   }
 }

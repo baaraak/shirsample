@@ -21,7 +21,7 @@ const Dropzone = ({ onChange }: Props) => {
   return (
     <div className="mb-4">
       <div
-        className="h-36 border-2 border-dashed border-secondary rounded-3xl cursor-pointer relative text-secondary opacity-40 hover:opacity-100 transition"
+        className="h-36 border-2 border-dashed border-secondary rounded-3xl cursor-pointer relative text-secondary opacity-60 hover:opacity-100 transition"
         onDrop={fileDrop}
       >
         <div className="flex items-center justify-center text-xl h-full transition">
@@ -30,6 +30,7 @@ const Dropzone = ({ onChange }: Props) => {
         <input
           type="file"
           onChange={filesSelected}
+          accept="audio/*"
           className="absolute inset-0 opacity-0 w-full cursor-pointer"
         />
       </div>
