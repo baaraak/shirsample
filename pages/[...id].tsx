@@ -1,33 +1,31 @@
-import { GetServerSideProps } from "next";
-import Link from "next/link";
-import React, { useState } from "react";
+import { GetServerSideProps } from 'next';
+import Link from 'next/link';
+import React, { useState } from 'react';
 import {
   AiFillQuestionCircle,
   AiOutlineLike,
   AiOutlinePlayCircle,
   AiOutlineShareAlt,
-} from "react-icons/ai";
-import { BsMusicNoteList } from "react-icons/bs";
-import Button from "../components/Button";
-import $fetch from "../lib/fetch";
-import prisma from "../lib/prisma";
-import { getSample, getComments } from "../lib/queries";
-import { dateStripped } from "../lib/utils";
+} from 'react-icons/ai';
+import { BsMusicNoteList } from 'react-icons/bs';
+import $fetch from '../lib/fetch';
+import { getSample, getComments } from '../lib/queries';
+import { dateStripped } from '../lib/utils';
 
 const Sample = ({ sample }) => {
-  const [body, setBody] = useState("");
-  const [artistName, setArtistName] = useState("");
-  const [songTitle, setSongTitle] = useState("");
+  const [body, setBody] = useState('');
+  const [artistName, setArtistName] = useState('');
+  const [songTitle, setSongTitle] = useState('');
   console.log({ sample });
 
   const onSubmitComment = async (e) => {
     e.preventDefault();
-    await $fetch("/api/comment", "POST", { body, sampleId: sample.id });
+    await $fetch('/api/comment', 'POST', { body, sampleId: sample.id });
   };
 
   const onSubmitProposal = async (e) => {
     e.preventDefault();
-    await $fetch("/api/proposal", "POST", {
+    await $fetch('/api/proposal', 'POST', {
       artist_name: artistName,
       song_title: songTitle,
       sampleId: sample.id,
@@ -40,7 +38,7 @@ const Sample = ({ sample }) => {
       <div
         className="flex rounded-3xl mb-10 p-4 relative"
         // TODO: move color to tailwind theme
-        style={{ background: "#F6F7FB" }}
+        style={{ background: '#F6F7FB' }}
       >
         <div className="h-24 w-24 bg-gray-200 mr-6 rounded-lg">
           <img src={sample.user.image} alt="" />
@@ -68,17 +66,14 @@ const Sample = ({ sample }) => {
           </div>
         </div>
         <div className="absolute right-0 bottom-0 flex -mb-5">
-          <Button
-            className="py-3 px-9 items-center rounded-full mr-4 text-lg  tracking-widest"
-            filled
-          >
+          <button className="btn py-3 px-9 items-center rounded-full mr-4 text-lg  tracking-widest">
             <AiOutlinePlayCircle className="mr-2 text-2xl" />
             LISTEN
-          </Button>
-          <Button className="py-3 px-8 items-center rounded-full mr-4 text-lg  tracking-widest">
+          </button>
+          <button className="btn py-3 px-8 items-center rounded-full mr-4 text-lg  tracking-widest">
             <AiFillQuestionCircle className="text-2xl mr-2" />
             ANSWERS
-          </Button>
+          </button>
         </div>
       </div>
       <h2 className="text-2xl mt-16 font-bold">Proposals</h2>
@@ -97,7 +92,7 @@ const Sample = ({ sample }) => {
               </div>
               <div className="text-red-500">
                 <Link href={`/profile/${c.user?.id}`}>
-                  {c.user?.name || "username"}
+                  {c.user?.name || 'username'}
                 </Link>
               </div>
             </div>
@@ -160,7 +155,7 @@ const Sample = ({ sample }) => {
           </div>
           <div className="flex-1">
             <div className="flex justify-between items-center">
-              <div className="text-red-500 ">{c.user?.name || "username"}</div>
+              <div className="text-red-500 ">{c.user?.name || 'username'}</div>
               <div className="text-gray-400 italic text-sm">2 days ago</div>
             </div>
             <div className="text-lg text-gray-600">{c.body}</div>
@@ -202,7 +197,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   if (!Number.isInteger(id))
     return {
       redirect: {
-        destination: "/",
+        destination: '/',
       },
     };
   const sample = await getSample(id);
@@ -210,7 +205,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   if (!sample)
     return {
       redirect: {
-        destination: "/",
+        destination: '/',
       },
     };
   return {

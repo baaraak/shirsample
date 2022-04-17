@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import { INTRODUCTION_BANNER_KEY } from '../lib/constants';
 
 export default function useIntroductionBanner() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    setIsVisible(
-      JSON.parse(localStorage.getItem('introduction_banner_visible')) ?? true
-    );
+    setIsVisible(!!!localStorage.getItem(INTRODUCTION_BANNER_KEY));
   }, []);
 
   const handleClose = () => {
-    localStorage.setItem('introduction_banner_visible', false);
+    localStorage.setItem(INTRODUCTION_BANNER_KEY, 'false');
     setIsVisible(false);
   };
 

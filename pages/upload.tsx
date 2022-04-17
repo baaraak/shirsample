@@ -2,18 +2,19 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AiOutlineCloudUpload, AiOutlineDelete } from 'react-icons/ai';
 import { GiMicrophone } from 'react-icons/gi';
-import Button from '../components/Button';
 import Dropzone from '../components/Dropzone';
 import Recorder from '../components/Recorder';
-import Select from '../components/Select';
-import useUser from '../hooks/useUser';
 import $fetch from '../lib/fetch';
 import { LANGUAGES } from '../lib/languages';
 import { MUSIC_GENRES } from '../lib/music-genres';
 import { CLOUDINARY_SAMPLES_FOLDER_NAME } from '../lib/constants';
 
-const TYPES = [];
-const selectedClasses = 'text-red-500 cursor-auto bg-white shadow';
+type FormData = {
+  title: string;
+  description: string;
+  language: string;
+  genre: string;
+};
 
 async function getSignature() {
   const response = await $fetch('/api/cloudinary/sign-sample');
@@ -23,26 +24,27 @@ async function getSignature() {
 }
 
 const Upload: React.FC = () => {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit } = useForm<FormData>();
   const [recordSampleMode, setRecordSampleMode] = useState(false);
-  const [audioFile, setAudioFile] = useState();
-  const [errors, setErrors] = useState();
+  const [audioFile, setAudioFile] = useState<File | Blob>();
+  const [errors, setErrors] = useState('');
 
-  const submitData = async (data) => {
-    if (!audioFile) return setErrors('Please add audio sample.');
+  const submitData = async (data: FormData) => {
+    if (!!data.title || !audioFile)
+      return setErrors('You must add a title and select an audio file');
 
+    // Read the audio file sample and upload it to cloudinary
     const fileReader = new FileReader();
     fileReader.onload = function (e) {
+      // validate file size
       const size = audioFile.size < 5242880;
-      const type = audioFile.type.includes('audio/');
-
-      // if (!type) return setErrors("Only audio file supported");
-      if (!size) return setErrors('File must be less than 5mb');
+      if (!size) return setErrors('File must be less than 15mb');
     };
     fileReader.readAsText(audioFile);
-    const url = `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/video/upload`;
 
+    // Get cloudinary security signature
     const { signature, timestamp } = await getSignature();
+
     const formData = new FormData();
     formData.append('file', audioFile);
     formData.append('signature', signature);
@@ -53,13 +55,14 @@ const Upload: React.FC = () => {
 
     try {
       // POST to Cloudinary api to upload sample audio
+      const url = `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/video/upload`;
       const response = await fetch(url, {
         method: 'POST',
         body: formData,
       });
       const data = await response.json();
       if (data.error) throw new Error(data.error);
-      // POST to server to create sample
+      // POST to create sample
       const { secure_url, duration } = data;
 
       await $fetch('/api/sample', 'POST', {
@@ -80,52 +83,46 @@ const Upload: React.FC = () => {
         Add a sample and let the community name it for you
       </h2>
       <form onSubmit={handleSubmit(submitData)} className="flex flex-col mt-6">
-        <div className="flex mb-4">
-          <Select {...register('genre')} className="block w-full">
+        <div className="grid grid-cols-2 gap-4 mb-4">
+          <select {...register('genre')} className="select select-bordered">
             <option value="All">Genre</option>
             {MUSIC_GENRES.map((v) => (
               <option key={v} value={v}>
                 {v}
               </option>
             ))}
-          </Select>
-          <Select
-            {...register('language')}
-            defaultValue="1"
-            className="ml-4 block w-full"
-          >
+          </select>
+          <select {...register('language')} className="select select-bordered">
             <option value="1">Language</option>
             {LANGUAGES.map((l) => (
               <option key={l.code} value={l.code}>
                 {l.native}
               </option>
             ))}
-          </Select>
+          </select>
         </div>
         <input
           type="text"
-          className="rounded-full border-gray-300 border pl-6 py-3 mb-4"
+          className="input input-bordered mb-4"
           placeholder="Title"
           {...register('title')}
         />
 
         <textarea
           placeholder="Content"
-          className="rounded-3xl border-gray-300 border pl-6 py-3 mb-2"
+          className="textarea textarea-bordered mb-4"
           rows={4}
           {...register('description')}
         />
 
-        <div className="bg-red-100 rounded-lg flex p-1 my-4">
+        <div className="bg-pink-100 rounded-lg flex p-1 mb-4">
           <button
             onClick={(e) => {
               e.preventDefault();
               setRecordSampleMode(false);
             }}
             className={`flex flex-1 rounded-lg items-center py-2 font-bold justify-center ${
-              !recordSampleMode
-                ? selectedClasses
-                : 'text-gray-700 hover:text-red-500'
+              !recordSampleMode ? selectedClasses : 'hover:text-secondary'
             }`}
           >
             <AiOutlineCloudUpload className="mr-2 text-lg" /> Upload
@@ -136,9 +133,7 @@ const Upload: React.FC = () => {
               setRecordSampleMode(true);
             }}
             className={`flex flex-1 rounded-lg items-center font-bold py-2 justify-center ml-1 ${
-              recordSampleMode
-                ? selectedClasses
-                : 'text-gray-700 hover:text-red-500'
+              recordSampleMode ? selectedClasses : 'hover:text-secondary'
             }`}
           >
             <GiMicrophone className="mr-2 text-lg" /> Record
@@ -147,16 +142,16 @@ const Upload: React.FC = () => {
 
         {audioFile ? (
           <>
-            <Button
-              className="mb-2 font-bold"
+            <button
+              className="btn btn-error mb-2 btn-outline"
               onClick={() => {
-                setErrors();
-                setAudioFile(null);
+                setErrors('');
+                setAudioFile(undefined);
               }}
             >
               <AiOutlineDelete className="text-xl mr-2" />
               DELETE AUDIO
-            </Button>
+            </button>
             <audio
               controls
               className="w-full"
@@ -169,24 +164,18 @@ const Upload: React.FC = () => {
           <Dropzone onChange={(files) => setAudioFile(files[0])} />
         )}
         {errors && (
-          <div className="p-2 bg-red-100 items-center text-red-800 leading-none lg:rounded-full flex lg:inline-flex mt-3 ">
-            <span className="flex rounded-full text-white bg-red-500 uppercase px-2 py-1 text-xs font-bold mr-3">
-              Error
-            </span>
+          <div className="bg-bg-red-100 items-center text-red-500 leading-none lg:rounded-full flex lg:inline-flex mb-4">
             <span className="mr-2 text-left flex-auto">{errors}</span>
           </div>
         )}
-        <Button
-          type="submit"
-          className="justify-center mt-4 font-bold"
-          filled
-          disabled={!!!audioFile}
-        >
+        <button type="submit" className="btn btn-primary">
           SUBMIT
-        </Button>
+        </button>
       </form>
     </div>
   );
 };
+
+const selectedClasses = 'text-secondary cursor-auto bg-white shadow';
 
 export default Upload;

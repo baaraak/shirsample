@@ -1,56 +1,48 @@
 import React from 'react';
 import Link from 'next/link';
 import { AiOutlineUser } from 'react-icons/ai';
-import { FiSearch, FiMic } from 'react-icons/fi';
+import { FiMic } from 'react-icons/fi';
 import Logo from '../components/Logo';
-import { signOut, useSession } from 'next-auth/react';
 import useUser from '../hooks/useUser';
-import Button from './Button';
 
 export default function Header() {
   const user = useUser();
 
   return (
-    <div className="py-3 px-4 flex shadow-header bg-white z-10 relative">
+    <div className="py-3 px-4 flex shadow-header accent-content bg-base-300    z-10 relative">
       <div className="flex max-w-screen-lg w-full m-auto justify-between items-center">
         <Logo />
         <nav className="flex items-center">
           <Link href="/">
-            <a className="text-lg font-light mx-8 text-gray-500 hover:text-red-500 transition">
+            <a className="text-lg font-light mx-8 hover:text-secondary transition">
               Home
             </a>
           </Link>
           <Link href="/messages">
-            <a className="text-lg font-light mx-8 text-gray-500 hover:text-red-500 transition">
+            <a className="text-lg font-light mx-8 hover:text-secondary transition">
               Messages
             </a>
           </Link>
           <Link href="/profile">
-            <a className="text-lg font-light mx-8 text-gray-500 hover:text-red-500 transition">
+            <a className="text-lg font-light mx-8 hover:text-secondary transition">
               Profile
             </a>
           </Link>
         </nav>
         <div className="flex items-center">
-          <div className="mx-7">
-            <button className="text-2xl text-red-500 cursor-pointer transition transform">
-              <FiSearch />
-            </button>
-          </div>
           {user ? (
             <>
               <Link href="/upload">
-                <Button className="flex px-8 py-3 rounded-full">
-                  <>
-                    <FiMic className="text-2xl mr-4" />
-                    Post Sample
-                  </>
-                </Button>
+                <button className="btn btn-primary">
+                  <FiMic className="text-2xl mr-2" />
+                  Post a Sample
+                </button>
               </Link>
-
-              <button className="text-3xl text-red-500 border border-red-500 rounded-full p-1 cursor-pointer  hover:scale-105 transform transition">
-                <AiOutlineUser />
-              </button>
+              <div className="avatar ml-8">
+                <div className="w-10 rounded-full ring-1 ring-secondary ring-offset-base-100 ring-offset-2">
+                  <img src="https://api.lorem.space/image/face?hash=3174" />
+                </div>
+              </div>
             </>
           ) : (
             <Link href="/api/auth/signin">Login | Signup</Link>

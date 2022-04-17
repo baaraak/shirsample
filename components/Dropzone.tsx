@@ -1,21 +1,27 @@
-import React from "react";
+import React from 'react';
 
-const Dropzone = ({ onChange }) => {
-  const fileDrop = (e) => {
+type Props = {
+  onChange: (e: FileList) => void;
+};
+
+const Dropzone = ({ onChange }: Props) => {
+  const fileDrop = (e: React.DragEvent<HTMLDivElement>) => {
     const files = e.dataTransfer.files;
     if (files.length) {
       onChange(files);
     }
   };
 
-  const filesSelected = (e) => {
-    onChange(e.target.files);
+  const filesSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      onChange(e.target.files);
+    }
   };
 
   return (
-    <div className="my-4">
+    <div className="mb-4">
       <div
-        className="h-36 border-2 border-dashed border-red-200 rounded-3xl cursor-pointer relative text-gray-500 hover:text-gray-700"
+        className="h-36 border-2 border-dashed border-secondary rounded-3xl cursor-pointer relative text-secondary opacity-40 hover:opacity-100 transition"
         onDrop={fileDrop}
       >
         <div className="flex items-center justify-center text-xl h-full transition">

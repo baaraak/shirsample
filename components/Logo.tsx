@@ -1,5 +1,5 @@
-import Link from "next/link";
-import React from "react";
+import Link from 'next/link';
+import React from 'react';
 
 export default function logo() {
   return (
@@ -8,7 +8,7 @@ export default function logo() {
         <span className="font-bold">
           <span className="">S</span>hir
         </span>
-        <span className="font-light text-red-500">Sample</span>
+        <span className="font-light text-secondary">Sample</span>
       </a>
     </Link>
   );

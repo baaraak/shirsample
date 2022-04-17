@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
 import Image from 'next/image';
-import Button from './Button';
 import useBanner from '../hooks/useBanner';
 
 export default function Banner() {
@@ -39,12 +38,12 @@ export default function Banner() {
       />
 
       <div className="w-full flex justify-center">
-        <Button
+        <button
           onClick={handleClose}
-          className="items-center px-8 py-4 rounded-full text-red-500 bg-red-100 border-none tracking-widest -mt-7 relative hover:shadow-xl hover:bg-red-500 hover:text-white"
+          className="btn items-center px-8 py-4 rounded-full text-red-500 bg-red-100 border-none tracking-widest -mt-7 relative hover:shadow-xl hover:bg-red-500 hover:text-white"
         >
           <AiOutlineClose className="mr-3 text-lg" /> COLLAPSE
-        </Button>
+        </button>
       </div>
     </div>
   );
