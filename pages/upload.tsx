@@ -9,7 +9,7 @@ import { LANGUAGES } from '../lib/languages';
 import { MUSIC_GENRES } from '../lib/music-genres';
 import { CLOUDINARY_SAMPLES_FOLDER_NAME } from '../lib/constants';
 
-type FormData = {
+export type SampleFormData = {
   audio?: string;
   title: string;
   description: string;
@@ -31,7 +31,7 @@ const Upload: React.FC = () => {
     setError,
     clearErrors,
     formState: { errors },
-  } = useForm<FormData>();
+  } = useForm<SampleFormData>();
   const [recordSampleMode, setRecordSampleMode] = useState(false);
   const [audioFile, setAudioFile] = useState<File | Blob>();
 

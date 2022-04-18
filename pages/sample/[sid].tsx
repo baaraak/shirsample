@@ -8,15 +8,16 @@ import {
   AiOutlineShareAlt,
 } from 'react-icons/ai';
 import { BsMusicNoteList } from 'react-icons/bs';
-import $fetch from '../lib/fetch';
-import { getSample, getComments } from '../lib/queries';
-import { dateStripped } from '../lib/utils';
+import $fetch from '../../lib/fetch';
+import { getSample, getComments } from '../../lib/queries';
+import { serializeResponse } from '../../lib/utils';
+import { Sample } from '../../types/sample';
 
-const Sample = ({ sample }) => {
+const Sample = ({ sample }: { sample: Sample }) => {
   const [body, setBody] = useState('');
   const [artistName, setArtistName] = useState('');
   const [songTitle, setSongTitle] = useState('');
-  console.log({ sample });
+  console.log('in sample id:', { sample });
 
   const onSubmitComment = async (e) => {
     e.preventDefault();
@@ -101,14 +102,14 @@ const Sample = ({ sample }) => {
             </div>
           </div>
           <div className="flex items-center">
-            <Button className="mr-4" filled>
+            <button className="mr-4">
               <AiOutlinePlayCircle className="mr-2" />
               PLAY
-            </Button>
-            <Button>
+            </button>
+            <button>
               <AiOutlineLike className="mr-2" />
               (2) LIKE
-            </Button>
+            </button>
           </div>
         </div>
       ))}
@@ -137,13 +138,13 @@ const Sample = ({ sample }) => {
               onChange={(e) => setSongTitle(e.target.value)}
             />
           </div>
-          <Button
+          <button
             filled
             type="submit"
             className="px-12 py-4 text-xl tracking-widest"
           >
             SUBMIT
-          </Button>
+          </button>
         </form>
       </div>
       <h2 className="text-2xl mt-16 font-bold mb-6">Comments</h2>
@@ -171,18 +172,13 @@ const Sample = ({ sample }) => {
         <textarea
           value={body}
           onChange={(e) => setBody(e.target.value)}
-          rows="3"
           className="rounded-3xl border-gray-400 border pl-6 py-2 w-80 mb-2 flex-1"
           placeholder="Write here..."
         />
         <div className="w-full">
-          <Button
-            type="submit"
-            className="px-6 py-3 tracking-widest ml-auto"
-            filled
-          >
+          <button type="submit" className="px-6 py-3 tracking-widest ml-auto">
             Add Comment
-          </Button>
+          </button>
         </div>
       </form>
     </div>
@@ -192,25 +188,18 @@ const Sample = ({ sample }) => {
 export default Sample;
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const id = Number(params.id[0]);
-
-  if (!Number.isInteger(id))
-    return {
-      redirect: {
-        destination: '/',
-      },
-    };
-  const sample = await getSample(id);
+  const sample = await getSample(params?.sid);
 
   if (!sample)
     return {
       redirect: {
         destination: '/',
       },
+      props: {},
     };
   return {
     props: {
-      sample: dateStripped(sample),
+      sample: serializeResponse(sample),
     },
   };
 };

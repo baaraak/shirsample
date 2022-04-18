@@ -4,7 +4,7 @@ import React from 'react';
 import useUser from '../../hooks/useUser';
 import prisma from '../../lib/prisma';
 import { getUser } from '../../lib/queries';
-import { dateStripped } from '../../lib/utils';
+import { serializeResponse } from '../../lib/utils';
 
 export default function UserProfile({ user }) {
   return <div>{user.name}</div>;
@@ -23,7 +23,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
   return {
     props: {
-      user: dateStripped(user),
+      user: serializeResponse(user),
     },
   };
 };

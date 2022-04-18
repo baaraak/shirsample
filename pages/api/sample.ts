@@ -1,5 +1,5 @@
 import { getSession } from 'next-auth/react';
-import { createSample } from '../../../lib/queries';
+import { createSample } from '../../lib/queries';
 import { object, string } from 'yup';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
@@ -28,9 +28,6 @@ export default async function handle(
         { url, duration, title, description, language, genre },
         userId
       );
-      console.log('***********************');
-      console.log({ result });
-      console.log('***********************');
       res.status(200).json(result);
     } catch (err) {
       console.log({ err });
