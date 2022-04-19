@@ -1,7 +1,7 @@
 import React from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
 import Image from 'next/image';
-import useBanner from '../hooks/useBanner';
+import useBanner from 'hooks/useBanner';
 
 export default function Banner() {
   const { isVisible, handleClose } = useBanner();

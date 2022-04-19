@@ -1,11 +1,9 @@
+import React, { useState } from 'react';
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
-import React, { useState } from 'react';
-import useUser from '../../hooks/useUser';
-import prisma from '../../lib/prisma';
-import $fetch from '../../lib/fetch';
-import { serializeResponse } from '../../lib/utils';
-import { getUser } from '../../lib/queries';
+import $fetch from 'lib/fetch';
+import { serializeResponse } from 'lib/utils';
+import { getUser } from 'lib/queries';
 
 export default function Profile({ user }) {
   const [name, setName] = useState(user.name);

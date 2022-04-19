@@ -5,7 +5,7 @@ import {
   AiOutlineShareAlt,
 } from 'react-icons/ai';
 import Link from 'next/link';
-import { Sample } from '../@types/sample';
+import { Sample } from '@types/sample';
 
 export default function SampleCard({ sample }: { sample: Sample }) {
   return (

@@ -1,6 +1,6 @@
 const cloudinary = require('cloudinary').v2;
 import { NextApiResponse, NextApiRequest } from 'next';
-import { CLOUDINARY_SAMPLES_FOLDER_NAME } from '../../../lib/constants';
+import { CLOUDINARY_SAMPLES_FOLDER_NAME } from 'lib/constants';
 
 export default function signature(req: NextApiRequest, res: NextApiResponse) {
   // Get the timestamp in seconds

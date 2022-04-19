@@ -1,13 +1,12 @@
-import { GetServerSideProps } from 'next';
-import { serializeResponse } from '../lib/utils';
-
-import Head from 'next/head';
 import React from 'react';
-import prisma from '../lib/prisma';
+import { GetServerSideProps } from 'next';
+import Head from 'next/head';
 
-import { MUSIC_GENRES } from '../lib/music-genres';
-import { Sample } from '../@types/sample';
-import SampleCard from '../components/SampleCard';
+import { Sample } from '@types/sample';
+import { serializeResponse } from 'lib/utils';
+import prisma from 'lib/prisma';
+import { MUSIC_GENRES } from 'lib/music-genres';
+import SampleCard from 'components/SampleCard';
 
 const Index = ({ samples }: any) => {
   return (

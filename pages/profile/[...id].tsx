@@ -1,10 +1,7 @@
-import { GetServerSideProps } from 'next';
-import { getSession } from 'next-auth/react';
 import React from 'react';
-import useUser from '../../hooks/useUser';
-import prisma from '../../lib/prisma';
-import { getUser } from '../../lib/queries';
-import { serializeResponse } from '../../lib/utils';
+import { GetServerSideProps } from 'next';
+import { getUser } from 'lib/queries';
+import { serializeResponse } from 'lib/utils';
 
 export default function UserProfile({ user }) {
   return <div>{user.name}</div>;

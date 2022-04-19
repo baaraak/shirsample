@@ -1,7 +1,7 @@
-import { createSample } from '../../lib/queries';
-import { object, string } from 'yup';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { apiHandler } from '../../lib/api-handler';
+import { object, string } from 'yup';
+import { createSample } from 'lib/queries';
+import { apiHandler } from 'lib/api-handler';
 
 const userSchema = object({
   url: string().url().required(),

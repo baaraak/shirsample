@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { string, object } from 'yup';
-import { apiHandler } from '../../lib/api-handler';
-import { createProposal } from '../../lib/queries';
+import { apiHandler } from 'lib/api-handler';
+import { createProposal } from 'lib/queries';
 
 let proposal = object({
   artist_name: string().required(),

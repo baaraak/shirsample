@@ -1,8 +1,7 @@
-import { SampleFormData } from '../pages/upload';
-
+import { SampleFormData } from 'pages/upload';
 import prisma from './prisma';
 
-export async function getUser(id) {
+export async function getUser(id: string) {
   return prisma.user.findUnique({
     where: { id },
   });
@@ -17,17 +16,6 @@ export async function updateUser(
       id: userId,
     },
     data,
-  });
-}
-
-export async function getSample(id) {
-  return prisma.sample.findUnique({
-    where: { id },
-    include: {
-      user: { select: { name: true } },
-      comments: true,
-      proposals: true,
-    },
   });
 }
 

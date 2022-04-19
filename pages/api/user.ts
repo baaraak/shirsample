@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { object, string } from 'yup';
-import { apiHandler } from '../../lib/api-handler';
-import { updateUser } from '../../lib/queries';
+import { apiHandler } from 'lib/api-handler';
+import { updateUser } from 'lib/queries';
 
 const user = object({
   name: string().optional(),

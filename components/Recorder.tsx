@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { AiOutlinePauseCircle, AiOutlinePlayCircle } from 'react-icons/ai';
-import useRecorder from '../hooks/useRecorder';
+import useRecorder from 'hooks/useRecorder';
 
 function Recorder({
   onChange,

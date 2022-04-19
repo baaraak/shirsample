@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AiOutlineCloudUpload, AiOutlineDelete } from 'react-icons/ai';
 import { GiMicrophone } from 'react-icons/gi';
-import Dropzone from '../components/Dropzone';
-import Recorder from '../components/Recorder';
-import $fetch from '../lib/fetch';
-import { LANGUAGES } from '../lib/languages';
-import { MUSIC_GENRES } from '../lib/music-genres';
-import { CLOUDINARY_SAMPLES_FOLDER_NAME } from '../lib/constants';
+import Dropzone from 'components/Dropzone';
+import Recorder from 'components/Recorder';
+import $fetch from 'lib/fetch';
+import { LANGUAGES } from 'lib/languages';
+import { MUSIC_GENRES } from 'lib/music-genres';
+import { CLOUDINARY_SAMPLES_FOLDER_NAME } from 'lib/constants';
 
 export type SampleFormData = {
   audio?: string;

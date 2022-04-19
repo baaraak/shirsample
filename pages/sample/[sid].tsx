@@ -1,13 +1,13 @@
-import { GetServerSideProps } from 'next';
 import React, { useState } from 'react';
-import Proposals from '../../components/Proposals';
-import SampleCard from '../../components/SampleCard';
-import $fetch from '../../lib/fetch';
-import { BsDisc, BsFillDiscFill } from 'react-icons/bs';
-import { getSample, getComments } from '../../lib/queries';
-import { serializeResponse } from '../../lib/utils';
-import { Sample } from '../../@types/sample';
+import { GetServerSideProps } from 'next';
 import { useForm } from 'react-hook-form';
+import { BsFillDiscFill } from 'react-icons/bs';
+import Proposals from 'components/Proposals';
+import SampleCard from 'components/SampleCard';
+import $fetch from 'lib/fetch';
+import { getSample } from 'lib/queries';
+import { serializeResponse } from 'lib/utils';
+import { Sample } from '@types/sample';
 
 type ProposalFormData = {
   artist_name: string;

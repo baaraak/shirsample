@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { string, object } from 'yup';
-import { apiHandler } from '../../lib/api-handler';
-import { createComment } from '../../lib/queries';
+import { apiHandler } from 'lib/api-handler';
+import { createComment } from 'lib/queries';
 
 let comment = object({
   body: string().required(),
