@@ -1,13 +1,31 @@
-import { getSession } from 'next-auth/react';
-import prisma from '../../lib/prisma';
+import { NextApiRequest, NextApiResponse } from 'next';
+import { string, object } from 'yup';
+import { apiHandler } from '../../lib/api-handler';
 import { createProposal } from '../../lib/queries';
 
-export default async (req, res) => {
-  if (req.method === 'POST') {
-    const { artist_name, song_title, sampleId } = req.body;
+let proposal = object({
+  artist_name: string().required(),
+  song_title: string().required(),
+});
 
-    // const { user } = await getSession({ req });
-    await createProposal({ artist_name, song_title }, 'user?.id', sampleId);
-    res.json({ success: true });
+ async function create (req: NextApiRequest, res: NextApiResponse)  {
+  
+    try {
+      if (!req.user) return res.status(401).end('Unauthenticated');
+      await proposal.validate(req.body);
+      const { artist_name, song_title } = req.body;
+
+      await createProposal(artist_name, song_title, req.user.id);
+      res.json({ success: true });
+    } catch (err) {
+      return res.json({
+        errors: err.errors || 'Server error',
+      });
+    }
   }
 };
+
+
+export default apiHandler({
+  post: create,
+});

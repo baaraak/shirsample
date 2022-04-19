@@ -6,7 +6,7 @@ import React from 'react';
 import prisma from '../lib/prisma';
 
 import { MUSIC_GENRES } from '../lib/music-genres';
-import { Sample } from '../types/sample';
+import { Sample } from '../@types/sample';
 import SampleCard from '../components/SampleCard';
 
 const Index = ({ samples }: any) => {

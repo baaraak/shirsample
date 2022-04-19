@@ -6,7 +6,7 @@ import $fetch from '../../lib/fetch';
 import { BsDisc, BsFillDiscFill } from 'react-icons/bs';
 import { getSample, getComments } from '../../lib/queries';
 import { serializeResponse } from '../../lib/utils';
-import { Sample } from '../../types/sample';
+import { Sample } from '../../@types/sample';
 import { useForm } from 'react-hook-form';
 
 type ProposalFormData = {

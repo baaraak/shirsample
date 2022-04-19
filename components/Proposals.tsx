@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { AiOutlineLike, AiOutlinePlayCircle } from 'react-icons/ai';
 import { BsMusicNoteList } from 'react-icons/bs';
-import { Proposal } from '../types/proposal';
+import { Proposal } from '../@types/proposal';
 
 export default function Proposals({ proposals }: { proposals: Proposal[] }) {
   return (

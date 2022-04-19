@@ -1,9 +1,9 @@
-import { getSession } from 'next-auth/react';
 import { createSample } from '../../lib/queries';
 import { object, string } from 'yup';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { apiHandler } from '../../lib/api-handler';
 
-let userSchema = object({
+const userSchema = object({
   url: string().url().required(),
   duration: string().required(),
   title: string().required(),
@@ -12,28 +12,24 @@ let userSchema = object({
   genre: string().optional(),
 });
 
-// parse and assert validity
-export default async function handle(
-  req: NextApiRequest,
-  res?: NextApiResponse
-) {
-  if (req.method === 'POST') {
-    try {
-      await userSchema.validate(req.body);
-      const { url, duration, title, description, language, genre } = req.body;
-      const session = await getSession({ req });
-      const userId = session?.user?.id;
-      if (!userId) throw new Error('User not logged in');
-      const result = await createSample(
-        { url, duration, title, description, language, genre },
-        userId
-      );
-      res.status(200).json(result);
-    } catch (err) {
-      console.log({ err });
-      return res.json({
-        errors: err.errors || 'Server error',
-      });
-    }
+async function create(req: NextApiRequest, res: NextApiResponse) {
+  try {
+    if (!req.user) return res.status(401).end('Unauthenticated');
+    await userSchema.validate(req.body);
+    const { url, duration, title, description, language, genre } = req.body;
+    
+    const result = await createSample(
+      { url, duration, title, description, language, genre },
+      req.user.id
+    );
+    res.status(200).json(result);
+  } catch (err) {
+    return res.json({
+      errors: err.errors || 'Server error',
+    });
   }
-}
+}-
+
+export default apiHandler({
+  post: create,
+});

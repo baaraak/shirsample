@@ -8,7 +8,10 @@ export async function getUser(id) {
   });
 }
 
-export async function updateUser(userId, data) {
+export async function updateUser(
+  userId: string,
+  data: { name?: string; bio?: string; image?: string }
+) {
   return prisma.user.update({
     where: {
       id: userId,
@@ -40,27 +43,36 @@ export async function createSample(
   });
 }
 
-export async function getComments(sampleId) {
-  return prisma.comment.findMany({
-    where: { sampleId },
-  });
-}
-
-export async function createComment(body, userId, sampleId) {
+export async function createComment(
+  body: string,
+  userId: string,
+  parentId?: string
+) {
   return prisma.comment.create({
     data: {
       body,
-      sample: { connect: { id: sampleId } },
       user: { connect: { id: userId } },
+      parent_id: parentId || null,
+    },
+    include: {
+      children: {
+        include: {
+          children: true,
+        },
+      },
     },
   });
 }
 
-export async function createProposal(data, userId, sampleId) {
+export async function createProposal(
+  artist_name: string,
+  song_title: string,
+  userId: string
+) {
   return prisma.proposal.create({
     data: {
-      ...data,
-      sample: { connect: { id: sampleId } },
+      artist_name,
+      song_title,
       user: { connect: { id: userId } },
     },
   });
