@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "samples" ALTER COLUMN "title" SET DATA TYPE TEXT,
+ALTER COLUMN "description" SET DATA TYPE TEXT,
+ALTER COLUMN "language" SET DATA TYPE TEXT;

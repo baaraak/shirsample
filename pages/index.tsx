@@ -27,7 +27,7 @@ const Index = ({ samples }: any) => {
             </select>
             <select className="select select-bordered">
               <option value="All">All Genre</option>
-              {MUSIC_GENRES.map((v) => (
+              {(MUSIC_GENRES as string[]).map((v) => (
                 <option value={v} key={v}>
                   {v}
                 </option>
@@ -48,6 +48,17 @@ const Index = ({ samples }: any) => {
 export default Index;
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  // cloudinary.config({
+  //   cloud_name: 'djyerevgr',
+  //   api_key: '858125511767918',
+  //   api_secret: 'X1yKvgWCgru2Rk0cpsk8NKABoDU',
+  //   secure: true,
+  // });
+  // cloudinary.search
+  //   .expression('resource_type:video')
+
+  //   .execute()
+  //   .then((result) => console.log(result));
   const samples = await prisma.sample.findMany({
     include: { user: { select: { name: true, id: true } } },
   });

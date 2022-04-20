@@ -19,6 +19,28 @@ export async function updateUser(
   });
 }
 
+export async function getSample(id: string) {
+  return prisma.sample.findUnique({
+    where: { id },
+    include: {
+      user: { select: { name: true } },
+      comments: true,
+      proposals: true,
+    },
+  });
+}
+
+export async function getSamples(id) {
+  return prisma.sample.findUnique({
+    where: { id },
+    include: {
+      user: { select: { name: true } },
+      comments: true,
+      proposals: true,
+    },
+  });
+}
+
 export async function createSample(
   data: SampleFormData & { url: string; duration: string },
   userId: string
@@ -55,13 +77,15 @@ export async function createComment(
 export async function createProposal(
   artist_name: string,
   song_title: string,
-  userId: string
+  userId: string,
+  sampleId: string
 ) {
   return prisma.proposal.create({
     data: {
       artist_name,
       song_title,
       user: { connect: { id: userId } },
+      sample: { connect: { id: sampleId } },
     },
   });
 }

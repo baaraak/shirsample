@@ -14,12 +14,12 @@ model Sample {
   id          String     @id @default(cuid())
   user        User       @relation(fields: [userId], references: [id])
   userId      String
-  title       String?    @db.VarChar(100)
-  description String?    @db.VarChar(255)
+  title       String?    
+  description String?    
   genre       String?
   url         String
   duration    String
-  language    String?    @db.Char(2)
+  language    String?    
   closed      Boolean    @default(false)
   proposals   Proposal[]
   comments    Comment[]
@@ -36,6 +36,9 @@ model Proposal {
   artist_name String   @db.VarChar(100)
   song_title  String   @db.VarChar(100)
   accepted    Boolean  @default(false)
+  sampleId    String
+  sample        Sample     @relation(fields: [sampleId], references: [id])
+
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -51,6 +54,8 @@ model Comment {
   children  Comment[] @relation("Comment_Children")
   parent    Comment?  @relation("Comment_Children", fields: [parent_id], references: [id])
   parent_id Int?
+  sampleId    String
+  sample        Sample     @relation(fields: [sampleId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

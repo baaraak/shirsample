@@ -6,8 +6,13 @@ import {
 } from 'react-icons/ai';
 import Link from 'next/link';
 import { Sample } from '@types/sample';
+import { LANGUAGES } from '../lib/languages';
+import { getLanguageName } from '../lib/utils';
+import { usePlayer } from '../context/player-context';
 
 export default function SampleCard({ sample }: { sample: Sample }) {
+  const { play, toggle } = usePlayer();
+  console.log(sample.url);
   return (
     <div
       className="flex rounded-3xl mb-10 p-4 relative border border-base-content"
@@ -47,7 +52,9 @@ export default function SampleCard({ sample }: { sample: Sample }) {
           </div>
           <div>
             Language:{' '}
-            {sample.language || (
+            {sample.language ? (
+              getLanguageName(sample.language)
+            ) : (
               <span className="italic">No description added</span>
             )}
           </div>
@@ -58,7 +65,10 @@ export default function SampleCard({ sample }: { sample: Sample }) {
           <AiFillQuestionCircle className="text-2xl mr-2" />
           ANSWERS
         </button>
-        <button className="btn mr-8 btn-lg rounded-full px-12 btn-secondary">
+        <button
+          className="btn mr-8 btn-lg rounded-full px-12 btn-secondary"
+          onClick={() => play(sample.url)}
+        >
           <AiOutlinePlayCircle className="mr-2 text-2xl" />
           LISTEN
         </button>

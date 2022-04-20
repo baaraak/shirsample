@@ -8,23 +8,20 @@ let proposal = object({
   song_title: string().required(),
 });
 
- async function create (req: NextApiRequest, res: NextApiResponse)  {
-  
-    try {
-      if (!req.user) return res.status(401).end('Unauthenticated');
-      await proposal.validate(req.body);
-      const { artist_name, song_title } = req.body;
+async function create(req: NextApiRequest, res: NextApiResponse) {
+  try {
+    if (!req.user) return res.status(401).end('Unauthenticated');
+    await proposal.validate(req.body);
+    const { artist_name, song_title } = req.body;
 
-      await createProposal(artist_name, song_title, req.user.id);
-      res.json({ success: true });
-    } catch (err) {
-      return res.json({
-        errors: err.errors || 'Server error',
-      });
-    }
+    await createProposal(artist_name, song_title, req.user.id);
+    res.json({ success: true });
+  } catch (err) {
+    return res.json({
+      errors: err.errors || 'Server error',
+    });
   }
-};
-
+}
 
 export default apiHandler({
   post: create,
